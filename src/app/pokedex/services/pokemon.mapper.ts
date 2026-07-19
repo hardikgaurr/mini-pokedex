@@ -21,6 +21,10 @@ export function mapPokemonList(response: any): Pokemon[] {
 
       types: pokemon.pokemon_v2_pokemontypes.map((type: any) => type.pokemon_v2_type.name),
 
+      abilities: pokemon.pokemon_v2_pokemonabilities.map(
+        (ability: any) => ability.pokemon_v2_ability.name,
+      ),
+
       stats: pokemon.pokemon_v2_pokemonstats.map((stat: any) => ({
         name: stat.pokemon_v2_stat.name,
         value: stat.base_stat,

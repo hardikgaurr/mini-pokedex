@@ -1,0 +1,32 @@
+@if (pokemon()) {
+
+<div class="drawer">
+
+  <img
+    [src]="pokemon()!.sprite"
+    [alt]="pokemon()!.name"
+    width="180">
+
+  <h2>{{ pokemon()!.name | titlecase }}</h2>
+
+  <p><strong>Height:</strong> {{ pokemon()!.height }}</p>
+
+  <p><strong>Weight:</strong> {{ pokemon()!.weight }}</p>
+
+  <p><strong>Types:</strong> {{ pokemon()!.types.join(', ') }}</p>
+
+  <p><strong>Abilities:</strong> {{ pokemon()!.abilities.join(', ') }}</p>
+
+  <app-pokemon-radar-chart
+    [pokemon]="pokemon()">
+  </app-pokemon-radar-chart>
+
+</div>
+
+} @else {
+
+<div class="drawer-empty">
+  Select a Pokémon
+</div>
+
+}

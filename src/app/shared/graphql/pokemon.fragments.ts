@@ -17,6 +17,12 @@ export const POKEMON_BASIC_INFO = gql`
       }
     }
 
+    pokemon_v2_pokemonabilities {
+      pokemon_v2_ability {
+        name
+      }
+    }
+
     pokemon_v2_pokemonstats {
       base_stat
 

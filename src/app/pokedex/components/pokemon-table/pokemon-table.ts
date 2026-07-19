@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DoCheck, ViewChild, inject, input } from '@angular/core';
+import { AfterViewInit, Component, DoCheck, ViewChild, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -33,6 +33,13 @@ export class PokemonTable implements AfterViewInit, DoCheck {
 
   private readonly store = inject(PokemonStore);
 
+  readonly pokemonSelected = output<Pokemon>();
+
+  onRowClick(pokemon: Pokemon): void {
+    this.store.selectPokemon(pokemon);
+    this.pokemonSelected.emit(pokemon);
+  } 
+  
   @ViewChild(MatSort)
   sort!: MatSort;
 

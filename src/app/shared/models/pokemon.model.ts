@@ -8,6 +8,8 @@ export interface Pokemon {
 
   types: string[];
 
+  abilities: string[];
+
   stats: PokemonStat[];
 }
 

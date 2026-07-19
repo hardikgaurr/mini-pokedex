@@ -1,5 +1,25 @@
-<h1>Mini Pokédex</h1>
+<mat-drawer-container autosize>
 
-<app-pokemon-table
-  [pokemons]="pokemons()">
-</app-pokemon-table>
+  <mat-drawer
+    #drawer
+    mode="side"
+    position="end"
+    [opened]="selectedPokemon() !== null">
+
+    <app-pokemon-drawer
+      [pokemon]="selectedPokemon()">
+    </app-pokemon-drawer>
+
+  </mat-drawer>
+
+  <mat-drawer-content>
+
+    <h1>Mini Pokédex</h1>
+
+    <app-pokemon-table
+      [pokemons]="pokemons()">
+    </app-pokemon-table>
+
+  </mat-drawer-content>
+
+</mat-drawer-container>
