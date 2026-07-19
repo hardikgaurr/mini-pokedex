@@ -1,12 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 
-import { Pokemon } from '../../../shared/models/pokemon.model';
 import { PokemonTable } from '../../components/pokemon-table/pokemon-table';
 import { PokemonStore } from '../../state/pokemon.store';
 import { PokemonSelectors } from '../../state/pokemon.selectors';
@@ -22,16 +16,12 @@ import { PokemonSelectors } from '../../state/pokemon.selectors';
 export class Home implements OnInit {
   private readonly store = inject(PokemonStore);
   private readonly selectors = inject(PokemonSelectors);
-  private readonly cdr = inject(ChangeDetectorRef);
 
-  pokemons: Pokemon[] = [];
+  readonly pokemons = toSignal(this.selectors.filteredPokemons$, {
+    initialValue: [],
+  });
 
   ngOnInit(): void {
     this.store.loadPokemons();
-
-    this.selectors.pokemons$.subscribe((pokemons) => {
-      this.pokemons = pokemons;
-      this.cdr.markForCheck();
-    });
   }
 }

@@ -1,12 +1,17 @@
+<mat-form-field appearance="outline" style="width: 350px; margin-bottom: 16px;">
+  <mat-label>Search Pokémon</mat-label>
+
+  <input
+    matInput
+    #search
+    placeholder="Search by name..."
+    (input)="onSearch(search.value)">
+</mat-form-field>
+
 <table mat-table [dataSource]="pokemons()">
 
-  <!-- Sprite -->
-
   <ng-container matColumnDef="sprite">
-
-    <th mat-header-cell *matHeaderCellDef>
-      Sprite
-    </th>
+    <th mat-header-cell *matHeaderCellDef>Sprite</th>
 
     <td mat-cell *matCellDef="let pokemon">
       <img
@@ -14,35 +19,22 @@
         [alt]="pokemon.name"
         width="60">
     </td>
-
   </ng-container>
 
-  <!-- Name -->
-
   <ng-container matColumnDef="name">
-
-    <th mat-header-cell *matHeaderCellDef>
-      Name
-    </th>
+    <th mat-header-cell *matHeaderCellDef>Name</th>
 
     <td mat-cell *matCellDef="let pokemon">
       {{ pokemon.name }}
     </td>
-
   </ng-container>
 
-  <!-- Types -->
-
   <ng-container matColumnDef="types">
-
-    <th mat-header-cell *matHeaderCellDef>
-      Types
-    </th>
+    <th mat-header-cell *matHeaderCellDef>Types</th>
 
     <td mat-cell *matCellDef="let pokemon">
       {{ pokemon.types.join(', ') }}
     </td>
-
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
