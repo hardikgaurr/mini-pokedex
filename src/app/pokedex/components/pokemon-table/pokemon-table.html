@@ -1,0 +1,51 @@
+<table>
+
+  <thead>
+
+    <tr>
+
+      <th>Sprite</th>
+
+      <th>Name</th>
+
+      <th>Types</th>
+
+    </tr>
+
+  </thead>
+
+  <tbody>
+
+    @for (pokemon of pokemons(); track pokemon.id) {
+
+      <tr>
+
+        <td>
+
+          <img
+            [src]="pokemon.sprite"
+            [alt]="pokemon.name"
+            width="60"
+          />
+
+        </td>
+
+        <td>
+
+          {{ pokemon.name }}
+
+        </td>
+
+        <td>
+
+          {{ pokemon.types.join(', ') }}
+
+        </td>
+
+      </tr>
+
+    }
+
+  </tbody>
+
+</table>
