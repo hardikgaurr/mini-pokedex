@@ -6,10 +6,10 @@ import {
   inject,
 } from '@angular/core';
 
-import { PokemonApi } from '../../services/pokemon';
 import { Pokemon } from '../../../shared/models/pokemon.model';
-
 import { PokemonTable } from '../../components/pokemon-table/pokemon-table';
+import { PokemonStore } from '../../state/pokemon.store';
+import { PokemonSelectors } from '../../state/pokemon.selectors';
 
 @Component({
   selector: 'app-home',
@@ -20,21 +20,18 @@ import { PokemonTable } from '../../components/pokemon-table/pokemon-table';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Home implements OnInit {
-  private readonly pokemonApi = inject(PokemonApi);
+  private readonly store = inject(PokemonStore);
+  private readonly selectors = inject(PokemonSelectors);
   private readonly cdr = inject(ChangeDetectorRef);
 
   pokemons: Pokemon[] = [];
 
   ngOnInit(): void {
-    this.pokemonApi.getPokemons().subscribe({
-      next: (pokemons) => {
-        this.pokemons = pokemons;
-        this.cdr.markForCheck();
-      },
+    this.store.loadPokemons();
 
-      error: (error) => {
-        console.error(error);
-      },
+    this.selectors.pokemons$.subscribe((pokemons) => {
+      this.pokemons = pokemons;
+      this.cdr.markForCheck();
     });
   }
 }

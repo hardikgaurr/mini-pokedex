@@ -1,23 +1,36 @@
-import { map } from 'rxjs/operators';
+import { Injectable, inject } from '@angular/core';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { PokemonStore } from './pokemon.store';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class PokemonSelectors {
-  constructor(private readonly store: PokemonStore) {}
+  private readonly store = inject(PokemonStore);
 
-  get pokemons$() {
-    return this.store.state$.pipe(map((state) => state.pokemons));
-  }
+  readonly pokemons$ = this.store.state$.pipe(
+    map((state) => state.pokemons),
+    distinctUntilChanged(),
+  );
 
-  get loading$() {
-    return this.store.state$.pipe(map((state) => state.loading));
-  }
+  readonly loading$ = this.store.state$.pipe(
+    map((state) => state.loading),
+    distinctUntilChanged(),
+  );
 
-  get selectedPokemon$() {
-    return this.store.state$.pipe(map((state) => state.selectedPokemon));
-  }
+  readonly error$ = this.store.state$.pipe(
+    map((state) => state.error),
+    distinctUntilChanged(),
+  );
 
-  get searchTerm$() {
-    return this.store.state$.pipe(map((state) => state.searchTerm));
-  }
+  readonly selectedPokemon$ = this.store.state$.pipe(
+    map((state) => state.selectedPokemon),
+    distinctUntilChanged(),
+  );
+
+  readonly searchTerm$ = this.store.state$.pipe(
+    map((state) => state.searchTerm),
+    distinctUntilChanged(),
+  );
 }

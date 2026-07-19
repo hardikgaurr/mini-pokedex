@@ -1,28 +1,84 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { BehaviorSubject, catchError, EMPTY, tap } from 'rxjs';
 
+import { PokemonApi } from '../services/pokemon';
+import { Pokemon } from '../../shared/models/pokemon.model';
 import { PokemonState, initialPokemonState } from './pokemon.state';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PokemonStore {
-  private readonly state = new BehaviorSubject<PokemonState>(initialPokemonState);
+  private readonly pokemonApi = inject(PokemonApi);
 
-  readonly state$ = this.state.asObservable();
+  private readonly stateSubject = new BehaviorSubject<PokemonState>(initialPokemonState);
 
-  get snapshot(): PokemonState {
-    return this.state.value;
+  readonly state$ = this.stateSubject.asObservable();
+
+  private get state(): PokemonState {
+    return this.stateSubject.value;
   }
 
-  update(partial: Partial<PokemonState>): void {
-    this.state.next({
-      ...this.snapshot,
+  private setState(partial: Partial<PokemonState>): void {
+    this.stateSubject.next({
+      ...this.state,
       ...partial,
     });
   }
 
+  loadPokemons(): void {
+    this.setLoading(true);
+    this.setError(null);
+
+    this.pokemonApi
+      .getPokemons()
+      .pipe(
+        tap((pokemons: Pokemon[]) => {
+          this.setState({
+            pokemons,
+            loading: false,
+          });
+        }),
+        catchError(() => {
+          this.setError('Failed to load Pokémon.');
+          this.setLoading(false);
+          return EMPTY;
+        }),
+      )
+      .subscribe();
+  }
+
+  selectPokemon(pokemon: Pokemon): void {
+    this.setState({
+      selectedPokemon: pokemon,
+    });
+  }
+
+  clearSelection(): void {
+    this.setState({
+      selectedPokemon: null,
+    });
+  }
+
+  setSearchTerm(searchTerm: string): void {
+    this.setState({
+      searchTerm,
+    });
+  }
+
+  private setLoading(loading: boolean): void {
+    this.setState({
+      loading,
+    });
+  }
+
+  private setError(error: string | null): void {
+    this.setState({
+      error,
+    });
+  }
+
   reset(): void {
-    this.state.next(initialPokemonState);
+    this.stateSubject.next(initialPokemonState);
   }
 }
