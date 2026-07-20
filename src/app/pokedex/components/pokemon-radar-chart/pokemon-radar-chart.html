@@ -1,10 +1,24 @@
-<div class="chart-container">
+<div class="chart-card">
 
-  <canvas
-    baseChart
-    [type]="'radar'"
-    [data]="radarChartData"
-    [options]="radarChartOptions">
-  </canvas>
+  <div class="chart-header">
+
+    <h3>Base Stats</h3>
+
+    <p>
+      Overall distribution of this Pokémon's core abilities.
+    </p>
+
+  </div>
+
+  <div class="chart-container">
+
+    <canvas
+      baseChart
+      [type]="'radar'"
+      [data]="radarChartData"
+      [options]="radarChartOptions">
+    </canvas>
+
+  </div>
 
 </div>

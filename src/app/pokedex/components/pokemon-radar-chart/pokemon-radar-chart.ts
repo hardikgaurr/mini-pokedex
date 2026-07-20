@@ -42,6 +42,12 @@ export class PokemonRadarChart implements OnChanges {
       {
         label: 'Base Stats',
         data: [] as number[],
+        borderColor: '#2563eb',
+        backgroundColor: 'rgba(37,99,235,.20)',
+        borderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointBackgroundColor: '#2563eb',
       },
     ],
   };
@@ -49,6 +55,45 @@ export class PokemonRadarChart implements OnChanges {
   radarChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+
+    animation: {
+      duration: 900,
+      easing: 'easeOutQuart' as const,
+    },
+
+    scales: {
+      r: {
+        beginAtZero: true,
+
+        suggestedMax: 150,
+
+        grid: {
+          color: '#e5e7eb',
+        },
+
+        angleLines: {
+          color: '#e5e7eb',
+        },
+
+        pointLabels: {
+          color: '#475569',
+          font: {
+            size: 12,
+            weight: '600' as const,
+          },
+        },
+
+        ticks: {
+          display: false,
+        },
+      },
+    },
   };
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -59,11 +104,25 @@ export class PokemonRadarChart implements OnChanges {
     if (!pokemon) return;
 
     this.radarChartData = {
-      labels: pokemon.stats.map((s) => s.name),
+      labels: pokemon.stats.map((stat) => stat.name),
+
       datasets: [
         {
           label: pokemon.name,
-          data: pokemon.stats.map((s) => s.value),
+
+          data: pokemon.stats.map((stat) => stat.value),
+
+          borderColor: '#2563eb',
+
+          backgroundColor: 'rgba(37,99,235,.20)',
+
+          borderWidth: 2,
+
+          pointRadius: 4,
+
+          pointHoverRadius: 6,
+
+          pointBackgroundColor: '#2563eb',
         },
       ],
     };

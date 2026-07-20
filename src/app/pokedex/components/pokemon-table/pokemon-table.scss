@@ -1,7 +1,333 @@
-table {
-  width: 100%;
+:host {
+  display: block;
 }
 
-img {
+.table-card {
+  padding: 28px;
+  border-radius: 24px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  overflow: hidden;
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.table-card:hover {
+  box-shadow: 0 20px 48px rgba(15, 23, 42, .08);
+}
+
+.table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.toolbar-left h2 {
+  margin: 0;
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.toolbar-left span {
   display: block;
+  margin-top: 6px;
+  color: #64748b;
+  font-size: .95rem;
+}
+
+/* ---------------- Search ---------------- */
+
+.search-field {
+  width: 400px;
+  max-width: 100%;
+}
+
+::ng-deep .search-field .mat-mdc-text-field-wrapper {
+  background: #f8fafc !important;
+  border: 1px solid transparent;
+  border-radius: 18px !important;
+  height: 56px;
+  transition: all .25s ease;
+  box-shadow: 0 1px 2px rgba(15,23,42,.04);
+}
+
+::ng-deep .search-field:hover .mat-mdc-text-field-wrapper {
+  background: #ffffff !important;
+  border-color: #dbeafe;
+}
+
+::ng-deep .search-field.mat-focused .mat-mdc-text-field-wrapper {
+  background: white !important;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59,130,246,.12);
+}
+
+::ng-deep .search-field .mat-mdc-form-field-flex {
+  height: 56px;
+  align-items: center;
+}
+
+::ng-deep .search-field .mat-mdc-form-field-infix {
+  min-height: 56px;
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
+}
+
+::ng-deep .search-field input {
+  font-size: .98rem;
+  color: #0f172a;
+}
+
+::ng-deep .search-field input::placeholder {
+  color: #94a3b8;
+}
+
+::ng-deep .search-field mat-icon {
+  color: #64748b;
+  margin-right: 12px;
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+::ng-deep .search-field .mdc-notched-outline {
+  display: none;
+}
+
+::ng-deep .search-field .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+}
+
+table {
+  width: 100%;
+  background: white;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.mat-mdc-header-row {
+  background: #f8fafc;
+}
+
+.mat-mdc-header-cell {
+  height: 60px;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #64748b;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.mat-mdc-cell {
+  padding-top: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.pokemon-row {
+  cursor: pointer;
+  transition: background .2s ease;
+}
+
+.pokemon-row:hover {
+  background: #f8fbff;
+}
+
+.sprite-wrapper {
+  width: 74px;
+  height: 74px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.pokemon-row:hover .sprite-wrapper {
+  transform: scale(1.08);
+  box-shadow: 0 10px 24px rgba(37, 99, 235, .12);
+}
+
+.sprite-wrapper img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+.pokemon-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pokemon-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+.pokemon-id {
+  color: #94a3b8;
+  font-size: .82rem;
+}
+
+.type-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.type-chip {
+  border-radius: 999px !important;
+  font-size: .75rem !important;
+  font-weight: 600;
+  transition: transform .18s ease;
+}
+
+.pokemon-row:hover .type-chip {
+  transform: translateY(-1px);
+}
+
+/* Pokémon Types */
+
+.type-grass { background:#dcfce7!important;color:#166534!important; }
+.type-fire { background:#fee2e2!important;color:#b91c1c!important; }
+.type-water { background:#dbeafe!important;color:#1d4ed8!important; }
+.type-electric { background:#fef9c3!important;color:#854d0e!important; }
+.type-poison { background:#f3e8ff!important;color:#7e22ce!important; }
+.type-ground { background:#fef3c7!important;color:#92400e!important; }
+.type-rock { background:#e7e5e4!important;color:#44403c!important; }
+.type-flying { background:#e0e7ff!important;color:#4338ca!important; }
+.type-bug { background:#ecfccb!important;color:#4d7c0f!important; }
+.type-normal { background:#f3f4f6!important;color:#4b5563!important; }
+.type-psychic { background:#fce7f3!important;color:#be185d!important; }
+.type-ice { background:#cffafe!important;color:#155e75!important; }
+.type-dragon { background:#ede9fe!important;color:#5b21b6!important; }
+.type-dark { background:#e5e7eb!important;color:#1f2937!important; }
+.type-steel { background:#f1f5f9!important;color:#475569!important; }
+.type-fairy { background:#fdf2f8!important;color:#be185d!important; }
+.type-fighting { background:#fee2e2!important;color:#991b1b!important; }
+.type-ghost { background:#ede9fe!important;color:#6d28d9!important; }
+
+.team-button {
+  min-width: 120px;
+  height: 42px;
+  border-radius: 12px !important;
+  font-weight: 600;
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.team-button mat-icon {
+  margin-right: 6px;
+}
+
+.team-button:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(37,99,235,.2);
+}
+
+.team-button:disabled {
+  opacity: .7;
+}
+
+/* ---------- Paginator ---------- */
+
+.table-footer {
+  margin-top: 18px;
+  border-top: 1px solid #e2e8f0;
+}
+
+mat-paginator {
+  background: transparent;
+}
+
+::ng-deep .mat-mdc-paginator-container {
+  min-height: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+}
+
+::ng-deep .mat-mdc-paginator-page-size {
+  margin-right: 24px;
+}
+
+::ng-deep .mat-mdc-paginator-range-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+::ng-deep .mat-mdc-paginator-range-label {
+  margin: 0 16px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Center page-size value */
+
+::ng-deep .mat-mdc-paginator .mat-mdc-select-trigger {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+::ng-deep .mat-mdc-paginator .mat-mdc-select-value {
+  flex: 1;
+  width: auto;
+  text-align: center;
+}
+
+::ng-deep .mat-mdc-paginator .mat-mdc-select-arrow-wrapper {
+  margin-left: 4px;
+}
+
+@media (max-width:900px) {
+
+  .table-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-field {
+    width: 100%;
+  }
+
+  .sprite-wrapper {
+    width: 60px;
+    height: 60px;
+  }
+
+  .sprite-wrapper img {
+    width: 56px;
+    height: 56px;
+  }
+
+  .team-button {
+    min-width: 100px;
+  }
+
+  ::ng-deep .mat-mdc-paginator-container {
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
 }

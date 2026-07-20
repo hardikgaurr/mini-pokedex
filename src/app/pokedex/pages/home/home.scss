@@ -1,5 +1,236 @@
+:host {
+  display: block;
+}
+
+/* ---------------- Layout ---------------- */
+
+.layout {
+  min-height: 100vh;
+  background: #f7f9fc;
+}
+
+mat-drawer-content {
+  padding: 56px 42px 80px;
+}
+
+.page {
+  max-width: 1450px;
+  margin: 0 auto;
+}
+
+/* ---------------- Drawer ---------------- */
+
+.pokemon-drawer {
+  width: 460px;
+  border-left: 1px solid #e5e7eb;
+  background: #fbfcfe;
+}
+
+/* ---------------- Hero ---------------- */
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 56px;
+  margin-bottom: 56px;
+}
+
+.hero-left {
+  flex: 1;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 8px 16px;
+
+  border-radius: 999px;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  color: #475569;
+
+  font-size: .82rem;
+
+  font-weight: 600;
+
+  margin-bottom: 22px;
+}
+
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2563eb;
+}
+
+.hero h1 {
+  margin: 0;
+
+  font-size: clamp(3rem, 6vw, 4.5rem);
+
+  line-height: .95;
+
+  font-weight: 900;
+
+  letter-spacing: -.05em;
+
+  color: #0f172a;
+}
+
+.hero p {
+  margin-top: 22px;
+
+  max-width: 640px;
+
+  color: #64748b;
+
+  font-size: 1.12rem;
+
+  line-height: 1.8;
+}
+
+/* ---------------- Hero Cards ---------------- */
+
+.hero-right {
+  display: flex;
+  gap: 18px;
+}
+
+.stat-card {
+  width: 150px;
+
+  padding: 28px 22px;
+
+  background: #fff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 20px;
+
+  text-align: center;
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow: 0 18px 34px rgba(15, 23, 42, .08);
+}
+
+.stat-card h2 {
+  margin: 0;
+
+  font-size: 2.15rem;
+
+  font-weight: 800;
+
+  color: #2563eb;
+}
+
+.stat-card span {
+  display: block;
+
+  margin-top: 10px;
+
+  color: #64748b;
+
+  font-size: .9rem;
+}
+
+/* ---------------- Sections ---------------- */
+
+.section {
+  margin-top: 36px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+.section-header h2 {
+  margin: 0;
+
+  font-size: 1.8rem;
+
+  font-weight: 700;
+
+  color: #0f172a;
+}
+
+.section-header p {
+  margin-top: 6px;
+  color: #64748b;
+}
+
+/* ---------------- States ---------------- */
+
 .center {
   display: flex;
   justify-content: center;
-  margin-top: 40px;
+  padding: 160px 0;
+}
+
+.error-state,
+.empty-state {
+  text-align: center;
+  padding: 160px 20px;
+}
+
+.error-state h2,
+.empty-state h2 {
+  color: #64748b;
+}
+
+/* ---------------- Responsive ---------------- */
+
+@media (max-width:1100px) {
+
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-right {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+}
+
+@media (max-width:700px) {
+
+  mat-drawer-content {
+    padding: 28px 18px 40px;
+  }
+
+  .hero-right {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: 2.7rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pokemon-drawer {
+    width: 100%;
+  }
+
 }

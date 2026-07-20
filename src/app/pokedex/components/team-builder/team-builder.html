@@ -1,42 +1,159 @@
-<div class="team-container">
+<mat-card class="team-card">
 
-  <div class="header">
-    <h2>Team ({{ team().length }}/6)</h2>
+  <div class="team-header">
+
+    <div>
+
+      <h2>
+
+        Your Team
+
+      </h2>
+
+      <p>
+
+        {{ team().length }} / 6 Pokémon selected
+
+      </p>
+
+    </div>
 
     @if (team().length > 0) {
+
       <button
         mat-stroked-button
         color="warn"
+        class="clear-btn"
         (click)="clear()">
+
+        <mat-icon>
+
+          delete_sweep
+
+        </mat-icon>
+
         Clear Team
+
       </button>
+
     }
+
   </div>
 
   @if (team().length === 0) {
 
-    <p>No Pokémon selected.</p>
+    <div class="empty-team">
 
-  } @else {
+      <div class="empty-icon">
 
-    <mat-chip-set>
+        <mat-icon>
 
-      @for (pokemon of team(); track pokemon.id) {
+          catching_pokemon
 
-        <mat-chip removable (removed)="remove(pokemon.id)">
+        </mat-icon>
 
-          {{ pokemon.name | titlecase }}
+      </div>
 
-          <button matChipRemove>
-            <mat-icon>cancel</mat-icon>
-          </button>
+      <h3>
 
-        </mat-chip>
+        Build Your Dream Team
 
-      }
+      </h3>
 
-    </mat-chip-set>
+      <p>
+
+        Choose up to six Pokémon from the Pokédex. Your selected team will appear here.
+
+      </p>
+
+    </div>
 
   }
 
-</div>
+  @else {
+
+    <div class="team-grid">
+
+      @for (pokemon of team(); track pokemon.id) {
+
+        <div class="pokemon-card">
+
+          <button
+            mat-icon-button
+            color="warn"
+            class="remove-btn"
+            (click)="remove(pokemon.id)">
+
+            <mat-icon>
+
+              close
+
+            </mat-icon>
+
+          </button>
+
+          <div class="sprite-container">
+
+            <img
+              [src]="pokemon.sprite"
+              [alt]="pokemon.name">
+
+          </div>
+
+          <div class="pokemon-number">
+
+            #{{ pokemon.id }}
+
+          </div>
+
+          <h3>
+
+            {{ pokemon.name | titlecase }}
+
+          </h3>
+
+          <div class="type-container">
+
+            @for (type of pokemon.types; track type) {
+
+              <mat-chip
+                class="type-chip"
+                [class]="'type-' + type">
+
+                {{ type | titlecase }}
+
+              </mat-chip>
+
+            }
+
+          </div>
+
+        </div>
+
+      }
+
+      @for (slot of [1,2,3,4,5,6].slice(team().length); track $index) {
+
+        <div class="team-slot">
+
+          <mat-icon>
+
+            catching_pokemon
+
+          </mat-icon>
+
+          <span>
+
+            Empty Slot
+
+          </span>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</mat-card>

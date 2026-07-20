@@ -1,19 +1,27 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 
-import { PokemonStore } from '../../state/pokemon.store';
-import { PokemonSelectors } from '../../state/pokemon.selectors';
 import { Pokemon } from '../../../shared/models/pokemon.model';
+import { PokemonSelectors } from '../../state/pokemon.selectors';
+import { PokemonStore } from '../../state/pokemon.store';
 
 @Component({
   selector: 'app-team-builder',
   standalone: true,
-  imports: [CommonModule, MatChipsModule, MatIconModule, MatButtonModule],
+  imports: [
+    CommonModule,
+    TitleCasePipe,
+    MatCardModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatIconModule,
+  ],
   templateUrl: './team-builder.html',
   styleUrl: './team-builder.scss',
 })

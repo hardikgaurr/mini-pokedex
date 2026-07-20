@@ -1,18 +1,30 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PokemonTable } from '../../components/pokemon-table/pokemon-table';
-import { PokemonDrawer } from '../../components/pokemon-drawer/pokemon-drawer';
 
-import { PokemonStore } from '../../state/pokemon.store';
-import { PokemonSelectors } from '../../state/pokemon.selectors';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+
+import { PokemonDrawer } from '../../components/pokemon-drawer/pokemon-drawer';
+import { PokemonTable } from '../../components/pokemon-table/pokemon-table';
 import { TeamBuilder } from '../../components/team-builder/team-builder';
+
+import { PokemonSelectors } from '../../state/pokemon.selectors';
+import { PokemonStore } from '../../state/pokemon.store';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatSidenavModule, MatProgressSpinnerModule, PokemonTable, PokemonDrawer, TeamBuilder],
+  imports: [
+    MatSidenavModule,
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    MatIconModule,
+    PokemonTable,
+    PokemonDrawer,
+    TeamBuilder,
+  ],
   templateUrl: './home.html',
   styleUrl: './home.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,6 +50,10 @@ export class Home implements OnInit {
   });
 
   ngOnInit(): void {
+    this.store.loadPokemons();
+  }
+
+  retry(): void {
     this.store.loadPokemons();
   }
 }

@@ -1,95 +1,178 @@
-<mat-form-field appearance="outline" style="width: 350px; margin-bottom: 16px;">
-  <mat-label>Search Pokémon</mat-label>
+<mat-card class="table-card">
 
-  <input
-    matInput
-    #search
-    placeholder="Search..."
-    (input)="onSearch(search.value)">
-</mat-form-field>
+  <div class="table-toolbar">
 
-<table
-  mat-table
-  [dataSource]="dataSource"
-  matSort>
+    <div class="toolbar-left">
+      <h2>Pokédex</h2>
+      <span>{{ dataSource.data.length }} Pokémon</span>
+    </div>
 
-  <!-- Sprite -->
-  <ng-container matColumnDef="sprite">
-    <th mat-header-cell *matHeaderCellDef>Sprite</th>
+    <mat-form-field
+      appearance="outline"
+      class="search-field">
 
-    <td mat-cell *matCellDef="let pokemon">
-      <img
-        [src]="pokemon.sprite"
-        [alt]="pokemon.name"
-        width="60">
-    </td>
-  </ng-container>
+      <mat-icon matPrefix>
+        search
+      </mat-icon>
 
-  <!-- Name -->
-  <ng-container matColumnDef="name">
-    <th
-      mat-header-cell
-      *matHeaderCellDef
-      mat-sort-header>
-      Name
-    </th>
+      <input
+        matInput
+        #search
+        placeholder="Search by name..."
+        (input)="onSearch(search.value)" />
 
-    <td mat-cell *matCellDef="let pokemon">
-      {{ pokemon.name | titlecase }}
-    </td>
-  </ng-container>
+    </mat-form-field>
 
-  <!-- Types -->
-  <ng-container matColumnDef="types">
-    <th mat-header-cell *matHeaderCellDef>
-      Types
-    </th>
+  </div>
 
-    <td mat-cell *matCellDef="let pokemon">
-      {{ pokemon.types.join(', ') }}
-    </td>
-  </ng-container>
+  <div class="table-wrapper">
 
-  <!-- Team -->
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef>
-      Team
-    </th>
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      matSort>
 
-    <td mat-cell *matCellDef="let pokemon">
+      <!-- Sprite -->
 
-      <button
-        mat-raised-button
-        color="primary"
-        [disabled]="isInTeam(pokemon.id) || isTeamFull"
-        (click)="addToTeam(pokemon); $event.stopPropagation()">
+      <ng-container matColumnDef="sprite">
 
-        @if (isInTeam(pokemon.id)) {
-          Added
-        } @else if (isTeamFull) {
-          Full
-        } @else {
-          Add
-        }
+        <th mat-header-cell *matHeaderCellDef>
+          Pokémon
+        </th>
 
-      </button>
+        <td mat-cell *matCellDef="let pokemon">
 
-    </td>
-  </ng-container>
+          <div class="sprite-wrapper">
+            <img
+              [src]="pokemon.sprite"
+              [alt]="pokemon.name" />
+          </div>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        </td>
 
-  <tr
-    mat-row
-    *matRowDef="let row; columns: displayedColumns;"
-    (click)="onRowClick(row)"
-    style="cursor: pointer">
-  </tr>
+      </ng-container>
 
-</table>
+      <!-- Name -->
 
-<mat-paginator
-  [pageSize]="5"
-  [pageSizeOptions]="[5, 10, 20]"
-  showFirstLastButtons>
-</mat-paginator>
+      <ng-container matColumnDef="name">
+
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header>
+
+          Name
+
+        </th>
+
+        <td mat-cell *matCellDef="let pokemon">
+
+          <div class="pokemon-info">
+
+            <div class="pokemon-name">
+              {{ pokemon.name | titlecase }}
+            </div>
+
+            <div class="pokemon-id">
+              #{{ pokemon.id }}
+            </div>
+
+          </div>
+
+        </td>
+
+      </ng-container>
+
+      <!-- Types -->
+
+      <ng-container matColumnDef="types">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Types
+        </th>
+
+        <td mat-cell *matCellDef="let pokemon">
+
+          <div class="type-list">
+
+            @for (
+              type of pokemon.types;
+              track trackType($index, type)
+            ) {
+
+              <mat-chip
+                class="type-chip"
+                [class]="getTypeClass(type)">
+
+                {{ type | titlecase }}
+
+              </mat-chip>
+
+            }
+
+          </div>
+
+        </td>
+
+      </ng-container>
+
+      <!-- Team -->
+
+      <ng-container matColumnDef="actions">
+
+        <th mat-header-cell *matHeaderCellDef>
+          Team
+        </th>
+
+        <td mat-cell *matCellDef="let pokemon">
+
+          <button
+            mat-flat-button
+            color="primary"
+            class="team-button"
+            [disabled]="isInTeam(pokemon.id) || isTeamFull"
+            [matTooltip]="buttonTooltip(pokemon)"
+            (click)="addToTeam(pokemon); $event.stopPropagation()">
+
+            <mat-icon>
+              {{ buttonIcon(pokemon) }}
+            </mat-icon>
+
+            {{ buttonLabel(pokemon) }}
+
+          </button>
+
+        </td>
+
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="displayedColumns; sticky: true">
+      </tr>
+
+      <tr
+        mat-row
+        class="pokemon-row"
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="onRowClick(row)">
+      </tr>
+
+    </table>
+
+  </div>
+
+  <div class="table-footer">
+
+    <mat-paginator
+      #paginator
+      [length]="dataSource.data.length"
+      [pageSize]="5"
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons>
+
+    </mat-paginator>
+
+  </div>
+
+</mat-card>

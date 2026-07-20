@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { combineLatest, map, distinctUntilChanged } from 'rxjs';
+import { combineLatest, distinctUntilChanged, map } from 'rxjs';
 
 import { PokemonStore } from './pokemon.store';
 
@@ -13,6 +13,7 @@ export class PokemonSelectors {
     map((state) => state.pokemons),
     distinctUntilChanged(),
   );
+
   readonly team$ = this.store.state$.pipe(
     map((state) => state.team),
     distinctUntilChanged(),
@@ -38,13 +39,29 @@ export class PokemonSelectors {
     distinctUntilChanged(),
   );
 
-  readonly filteredPokemons$ = combineLatest([this.pokemons$, this.searchTerm$]).pipe(
-    map(([pokemons, term]) => {
-      if (!term.trim()) return pokemons;
+  readonly typeFilter$ = this.store.state$.pipe(
+    map((state) => state.typeFilter),
+    distinctUntilChanged(),
+  );
 
-      const search = term.toLowerCase();
+  readonly filteredPokemons$ = combineLatest([
+    this.pokemons$,
+    this.searchTerm$,
+    this.typeFilter$,
+  ]).pipe(
+    map(([pokemons, term, type]) => {
+      const search = term.trim().toLowerCase();
+      const selectedType = type.trim().toLowerCase();
 
-      return pokemons.filter((pokemon) => pokemon.name.toLowerCase().includes(search));
+      return pokemons.filter((pokemon) => {
+        const matchesSearch = !search || pokemon.name.toLowerCase().includes(search);
+
+        const matchesType =
+          !selectedType ||
+          pokemon.types.some((pokemonType) => pokemonType.toLowerCase() === selectedType);
+
+        return matchesSearch && matchesType;
+      });
     }),
   );
 }

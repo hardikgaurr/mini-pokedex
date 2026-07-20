@@ -1,16 +1,23 @@
 import { AfterViewInit, Component, ViewChild, inject, input, output, effect } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { Pokemon } from '../../../shared/models/pokemon.model';
-import { PokemonStore } from '../../state/pokemon.store';
 import { PokemonSelectors } from '../../state/pokemon.selectors';
+import { PokemonStore } from '../../state/pokemon.store';
 
 @Component({
   selector: 'app-pokemon-table',
@@ -18,10 +25,18 @@ import { PokemonSelectors } from '../../state/pokemon.selectors';
   imports: [
     CommonModule,
     FormsModule,
+    TitleCasePipe,
+    MatCardModule,
+    MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatPaginatorModule,
     MatSortModule,
     MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatChipsModule,
   ],
   templateUrl: './pokemon-table.html',
   styleUrl: './pokemon-table.scss',
@@ -29,9 +44,32 @@ import { PokemonSelectors } from '../../state/pokemon.selectors';
 export class PokemonTable implements AfterViewInit {
   readonly pokemons = input.required<Pokemon[]>();
 
+  readonly pokemonSelected = output<Pokemon>();
+
   readonly displayedColumns = ['sprite', 'name', 'types', 'actions'];
 
   readonly dataSource = new MatTableDataSource<Pokemon>();
+
+  readonly pokemonTypes = [
+    'bug',
+    'dark',
+    'dragon',
+    'electric',
+    'fairy',
+    'fighting',
+    'fire',
+    'flying',
+    'ghost',
+    'grass',
+    'ground',
+    'ice',
+    'normal',
+    'poison',
+    'psychic',
+    'rock',
+    'steel',
+    'water',
+  ];
 
   private readonly store = inject(PokemonStore);
   private readonly selectors = inject(PokemonSelectors);
@@ -39,8 +77,6 @@ export class PokemonTable implements AfterViewInit {
   readonly team = toSignal(this.selectors.team$, {
     initialValue: [] as Pokemon[],
   });
-
-  readonly pokemonSelected = output<Pokemon>();
 
   @ViewChild(MatSort)
   sort!: MatSort;
@@ -51,6 +87,10 @@ export class PokemonTable implements AfterViewInit {
   constructor() {
     effect(() => {
       this.dataSource.data = this.pokemons();
+
+      if (this.paginator) {
+        this.paginator.firstPage();
+      }
     });
   }
 
@@ -61,6 +101,19 @@ export class PokemonTable implements AfterViewInit {
 
   onSearch(value: string): void {
     this.store.setSearchTerm(value);
+
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+  }
+
+  onTypeFilter(type: string): void {
+    // We'll implement this in the store next.
+    this.store.setTypeFilter(type);
+
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
   }
 
   onRowClick(pokemon: Pokemon): void {
@@ -78,5 +131,49 @@ export class PokemonTable implements AfterViewInit {
 
   get isTeamFull(): boolean {
     return this.team().length >= 6;
+  }
+
+  getTypeClass(type: string): string {
+    return `type-${type.toLowerCase()}`;
+  }
+
+  trackType(_: number, type: string): string {
+    return type;
+  }
+
+  buttonLabel(pokemon: Pokemon): string {
+    if (this.isInTeam(pokemon.id)) {
+      return 'Added';
+    }
+
+    if (this.isTeamFull) {
+      return 'Team Full';
+    }
+
+    return 'Add';
+  }
+
+  buttonIcon(pokemon: Pokemon): string {
+    if (this.isInTeam(pokemon.id)) {
+      return 'check';
+    }
+
+    if (this.isTeamFull) {
+      return 'block';
+    }
+
+    return 'add';
+  }
+
+  buttonTooltip(pokemon: Pokemon): string {
+    if (this.isInTeam(pokemon.id)) {
+      return 'Already in your team';
+    }
+
+    if (this.isTeamFull) {
+      return 'Maximum of 6 Pokémon allowed';
+    }
+
+    return 'Add to team';
   }
 }

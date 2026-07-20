@@ -66,6 +66,12 @@ export class PokemonStore {
     });
   }
 
+  setTypeFilter(typeFilter: string): void {
+    this.setState({
+      typeFilter,
+    });
+  }
+
   // ===========================
   // Team Builder
   // ===========================
