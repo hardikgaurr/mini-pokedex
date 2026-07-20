@@ -1,19 +1,32 @@
-export interface Pokemon {
-  id: number;
-  name: string;
-  height: number;
-  weight: number;
+/**
+ * Supported Pokémon base stat names returned by the GraphQL API.
+ */
+export type PokemonStatName =
+  'hp' | 'attack' | 'defense' | 'special-attack' | 'special-defense' | 'speed';
 
-  sprite: string;
-
-  types: string[];
-
-  abilities: string[];
-
-  stats: PokemonStat[];
+/**
+ * Pokémon base stat.
+ */
+export interface PokemonStat {
+  readonly name: PokemonStatName;
+  readonly value: number;
 }
 
-export interface PokemonStat {
-  name: string;
-  value: number;
+/**
+ * Pokémon domain model used throughout the application.
+ */
+export interface Pokemon {
+  readonly id: number;
+  readonly name: string;
+
+  readonly height: number;
+  readonly weight: number;
+
+  readonly sprite: string;
+
+  readonly types: readonly string[];
+
+  readonly abilities: readonly string[];
+
+  readonly stats: readonly PokemonStat[];
 }

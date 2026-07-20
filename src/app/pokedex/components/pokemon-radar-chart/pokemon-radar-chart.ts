@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import {
   Chart,
+  ChartData,
+  ChartOptions,
   RadarController,
   RadialLinearScale,
   PointElement,
@@ -36,12 +38,12 @@ Chart.register(
 export class PokemonRadarChart implements OnChanges {
   readonly pokemon = input<Pokemon | null>(null);
 
-  radarChartData = {
-    labels: [] as string[],
+  radarChartData: ChartData<'radar'> = {
+    labels: [],
     datasets: [
       {
         label: 'Base Stats',
-        data: [] as number[],
+        data: [],
         borderColor: '#2563eb',
         backgroundColor: 'rgba(37,99,235,.20)',
         borderWidth: 2,
@@ -52,7 +54,7 @@ export class PokemonRadarChart implements OnChanges {
     ],
   };
 
-  radarChartOptions = {
+  radarChartOptions: ChartOptions<'radar'> = {
     responsive: true,
     maintainAspectRatio: false,
 
@@ -64,13 +66,12 @@ export class PokemonRadarChart implements OnChanges {
 
     animation: {
       duration: 900,
-      easing: 'easeOutQuart' as const,
+      easing: 'easeOutQuart',
     },
 
     scales: {
       r: {
         beginAtZero: true,
-
         suggestedMax: 150,
 
         grid: {
@@ -85,7 +86,7 @@ export class PokemonRadarChart implements OnChanges {
           color: '#475569',
           font: {
             size: 12,
-            weight: '600' as const,
+            weight: 600,
           },
         },
 
@@ -97,31 +98,27 @@ export class PokemonRadarChart implements OnChanges {
   };
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes['pokemon']) return;
+    if (!changes['pokemon']) {
+      return;
+    }
 
     const pokemon = this.pokemon();
 
-    if (!pokemon) return;
+    if (!pokemon) {
+      return;
+    }
 
     this.radarChartData = {
       labels: pokemon.stats.map((stat) => stat.name),
-
       datasets: [
         {
           label: pokemon.name,
-
           data: pokemon.stats.map((stat) => stat.value),
-
           borderColor: '#2563eb',
-
           backgroundColor: 'rgba(37,99,235,.20)',
-
           borderWidth: 2,
-
           pointRadius: 4,
-
           pointHoverRadius: 6,
-
           pointBackgroundColor: '#2563eb',
         },
       ],
