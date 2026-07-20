@@ -66,6 +66,42 @@ export class PokemonStore {
     });
   }
 
+  // ===========================
+  // Team Builder
+  // ===========================
+
+  addToTeam(pokemon: Pokemon): void {
+    if (this.state.team.some((p) => p.id === pokemon.id)) {
+      return;
+    }
+
+    if (this.state.team.length >= 6) {
+      return;
+    }
+
+    this.setState({
+      team: [...this.state.team, pokemon],
+    });
+  }
+
+  removeFromTeam(id: number): void {
+    this.setState({
+      team: this.state.team.filter((pokemon) => pokemon.id !== id),
+    });
+  }
+
+  clearTeam(): void {
+    this.setState({
+      team: [],
+    });
+  }
+
+  isInTeam(id: number): boolean {
+    return this.state.team.some((pokemon) => pokemon.id === id);
+  }
+
+  // ===========================
+
   private setLoading(loading: boolean): void {
     this.setState({
       loading,

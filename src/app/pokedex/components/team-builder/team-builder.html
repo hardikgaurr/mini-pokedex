@@ -1,0 +1,44 @@
+<div class="team-container">
+
+  <div class="header">
+    <h2>Team ({{ team().length }}/6)</h2>
+
+    @if (team().length > 0) {
+      <button
+        mat-stroked-button
+        color="warn"
+        (click)="clear()">
+        Clear Team
+      </button>
+    }
+  </div>
+
+  @if (team().length === 0) {
+
+    <p>No Pokémon selected.</p>
+
+  } @else {
+
+    <mat-chip-set>
+
+      @for (pokemon of team(); track pokemon.id) {
+
+        <mat-chip-row
+          removable
+          (removed)="remove(pokemon.id)">
+
+          {{ pokemon.name | titlecase }}
+
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+
+        </mat-chip-row>
+
+      }
+
+    </mat-chip-set>
+
+  }
+
+</div>

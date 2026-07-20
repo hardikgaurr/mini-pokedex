@@ -13,6 +13,10 @@ export class PokemonSelectors {
     map((state) => state.pokemons),
     distinctUntilChanged(),
   );
+  readonly team$ = this.store.state$.pipe(
+    map((state) => state.team),
+    distinctUntilChanged(),
+  );
 
   readonly loading$ = this.store.state$.pipe(
     map((state) => state.loading),

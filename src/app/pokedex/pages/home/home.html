@@ -12,14 +12,32 @@
 
   </mat-drawer>
 
-  <mat-drawer-content>
+<mat-drawer-content>
 
-    <h1>Mini Pokédex</h1>
+  <h1>Mini Pokédex</h1>
+
+  @if (loading()) {
+
+    <div class="center">
+      <mat-spinner></mat-spinner>
+    </div>
+
+  } @else if (error()) {
+
+    <h2>{{ error() }}</h2>
+
+  } @else if (pokemons().length === 0) {
+
+    <h2>No Pokémon found.</h2>
+
+  } @else {
 
     <app-pokemon-table
       [pokemons]="pokemons()">
     </app-pokemon-table>
 
-  </mat-drawer-content>
+  }
 
+</mat-drawer-content>
+<app-team-builder></app-team-builder>
 </mat-drawer-container>

@@ -1,0 +1,16 @@
+.team-container {
+  margin-top: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+mat-chip-set {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
