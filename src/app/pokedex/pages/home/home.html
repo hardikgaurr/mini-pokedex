@@ -12,32 +12,34 @@
 
   </mat-drawer>
 
-<mat-drawer-content>
+  <mat-drawer-content>
 
-  <h1>Mini Pokédex</h1>
+    <h1>Mini Pokédex</h1>
 
-  @if (loading()) {
+    @if (loading()) {
 
-    <div class="center">
-      <mat-spinner></mat-spinner>
-    </div>
+      <div class="center">
+        <mat-spinner></mat-spinner>
+      </div>
 
-  } @else if (error()) {
+    } @else if (error()) {
 
-    <h2>{{ error() }}</h2>
+      <h2>{{ error() }}</h2>
 
-  } @else if (pokemons().length === 0) {
+    } @else if (pokemons().length === 0) {
 
-    <h2>No Pokémon found.</h2>
+      <h2>No Pokémon found.</h2>
 
-  } @else {
+    } @else {
 
-    <app-pokemon-table
-      [pokemons]="pokemons()">
-    </app-pokemon-table>
+      <app-pokemon-table
+        [pokemons]="pokemons()">
+      </app-pokemon-table>
 
-  }
+      <app-team-builder></app-team-builder>
 
-</mat-drawer-content>
-<app-team-builder></app-team-builder>
+    }
+
+  </mat-drawer-content>
+
 </mat-drawer-container>
