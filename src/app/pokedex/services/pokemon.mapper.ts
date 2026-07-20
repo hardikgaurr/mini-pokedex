@@ -1,12 +1,43 @@
-import { Pokemon } from '../../shared/models/pokemon.model';
+import { Pokemon, PokemonStatName } from '../../shared/models/pokemon.model';
 
+/**
+ * Shape of the sprite JSON returned by the PokéAPI.
+ */
+interface PokemonSprites {
+  front_default?: string;
+}
+
+/**
+ * Safely parses the sprite payload returned by the GraphQL API.
+ */
+function parseSprites(spriteData: unknown): PokemonSprites {
+  if (!spriteData) {
+    return {};
+  }
+
+  if (typeof spriteData === 'object') {
+    return spriteData as PokemonSprites;
+  }
+
+  if (typeof spriteData === 'string') {
+    try {
+      return JSON.parse(spriteData) as PokemonSprites;
+    } catch {
+      return {};
+    }
+  }
+
+  return {};
+}
+
+/**
+ * Maps the GraphQL Pokémon list response into domain models.
+ */
 export function mapPokemonList(response: any): Pokemon[] {
   const pokemons = response?.data?.pokemon_v2_pokemon ?? [];
 
-  return pokemons.map((pokemon: any) => {
-    const spriteData = pokemon.pokemon_v2_pokemonsprites?.[0]?.sprites;
-
-    const sprites = typeof spriteData === 'string' ? JSON.parse(spriteData) : (spriteData ?? {});
+  return pokemons.map((pokemon: any): Pokemon => {
+    const sprites = parseSprites(pokemon.pokemon_v2_pokemonsprites?.[0]?.sprites);
 
     return {
       id: pokemon.id,
@@ -26,7 +57,7 @@ export function mapPokemonList(response: any): Pokemon[] {
       ),
 
       stats: pokemon.pokemon_v2_pokemonstats.map((stat: any) => ({
-        name: stat.pokemon_v2_stat.name,
+        name: stat.pokemon_v2_stat.name as PokemonStatName,
         value: stat.base_stat,
       })),
     };
