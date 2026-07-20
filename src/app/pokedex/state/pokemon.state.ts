@@ -6,6 +6,7 @@ export interface PokemonState {
   loading: boolean;
   error: string | null;
   searchTerm: string;
+  team: Pokemon[];
 }
 
 export const initialPokemonState: PokemonState = {
@@ -16,12 +17,3 @@ export const initialPokemonState: PokemonState = {
   searchTerm: '',
   team: [],
 };
-
-export interface PokemonState {
-  pokemons: Pokemon[];
-  selectedPokemon: Pokemon | null;
-  loading: boolean;
-  error: string | null;
-  searchTerm: string;
-  team: Pokemon[];
-}
