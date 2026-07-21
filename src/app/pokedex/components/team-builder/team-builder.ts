@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 
@@ -24,6 +24,7 @@ import { PokemonStore } from '../../state/pokemon.store';
   ],
   templateUrl: './team-builder.html',
   styleUrl: './team-builder.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamBuilder {
   private readonly store = inject(PokemonStore);
@@ -33,11 +34,21 @@ export class TeamBuilder {
     initialValue: [] as Pokemon[],
   });
 
+  readonly teamSize = () => this.team().length;
+
+  readonly isEmpty = () => this.teamSize() === 0;
+
+  readonly isFull = () => this.teamSize() >= 6;
+
   remove(id: number): void {
     this.store.removeFromTeam(id);
   }
 
   clear(): void {
+    if (this.isEmpty()) {
+      return;
+    }
+
     this.store.clearTeam();
   }
 }
