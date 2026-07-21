@@ -1,7 +1,15 @@
 import { Injectable, inject } from '@angular/core';
-import { combineLatest, distinctUntilChanged, map, shareReplay } from 'rxjs';
+import {
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  Observable,
+  shareReplay,
+} from 'rxjs';
 
 import { PokemonStore } from './pokemon.store';
+import { PokemonState } from './pokemon.state';
 
 @Injectable({
   providedIn: 'root',
@@ -9,47 +17,36 @@ import { PokemonStore } from './pokemon.store';
 export class PokemonSelectors {
   private readonly store = inject(PokemonStore);
 
-  readonly pokemons$ = this.store.state$.pipe(
-    map((state) => state.pokemons),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true }),
+  private select<T>(project: (state: PokemonState) => T): Observable<T> {
+    return this.store.state$.pipe(
+      map(project),
+      distinctUntilChanged(),
+      shareReplay({
+        bufferSize: 1,
+        refCount: true,
+      }),
+    );
+  }
+
+  readonly pokemons$ = this.select((state) => state.pokemons);
+
+  readonly team$ = this.select((state) => state.team);
+
+  readonly loading$ = this.select((state) => state.loading);
+
+  readonly error$ = this.select((state) => state.error);
+
+  readonly selectedPokemon$ = this.select((state) => state.selectedPokemon);
+
+  readonly searchTerm$ = this.select((state) => state.searchTerm).pipe(
+    debounceTime(250),
+    shareReplay({
+      bufferSize: 1,
+      refCount: true,
+    }),
   );
 
-  readonly team$ = this.store.state$.pipe(
-    map((state) => state.team),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true }),
-  );
-
-  readonly loading$ = this.store.state$.pipe(
-    map((state) => state.loading),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true }),
-  );
-
-  readonly error$ = this.store.state$.pipe(
-    map((state) => state.error),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true }),
-  );
-
-  readonly selectedPokemon$ = this.store.state$.pipe(
-    map((state) => state.selectedPokemon),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true }),
-  );
-
-  readonly searchTerm$ = this.store.state$.pipe(
-    map((state) => state.searchTerm),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true }),
-  );
-
-  readonly typeFilter$ = this.store.state$.pipe(
-    map((state) => state.typeFilter),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true }),
-  );
+  readonly typeFilter$ = this.select((state) => state.typeFilter);
 
   readonly filteredPokemons$ = combineLatest([
     this.pokemons$,
@@ -69,7 +66,9 @@ export class PokemonSelectors {
         return matchesSearch && matchesType;
       });
     }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true }),
+    shareReplay({
+      bufferSize: 1,
+      refCount: true,
+    }),
   );
 }
