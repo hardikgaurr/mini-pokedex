@@ -304,10 +304,24 @@ mat-paginator {
   .table-toolbar {
     flex-direction: column;
     align-items: stretch;
+    gap: 20px;
   }
 
-  .search-field {
+  .toolbar-left {
+    text-align: center;
+  }
+
+  .toolbar-right {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     width: 100%;
+  }
+
+  .search-field,
+  .type-filter {
+    width: 100%;
+    max-width: 100%;
   }
 
   .sprite-wrapper {
@@ -321,7 +335,8 @@ mat-paginator {
   }
 
   .team-button {
-    min-width: 100px;
+    width: 100%;
+    min-width: unset;
   }
 
   ::ng-deep .mat-mdc-paginator-container {
@@ -329,5 +344,4 @@ mat-paginator {
     gap: 16px;
     flex-wrap: wrap;
   }
-
 }
