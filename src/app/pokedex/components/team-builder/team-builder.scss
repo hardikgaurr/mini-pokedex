@@ -291,3 +291,28 @@
   }
 
 }
+
+.empty-state {
+  padding: 64px 24px;
+  text-align: center;
+  color: #64748b;
+}
+
+.empty-state mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  color: #cbd5e1;
+  margin-bottom: 16px;
+}
+
+.empty-state h3 {
+  margin: 12px 0 8px;
+  font-size: 1.25rem;
+  color: #0f172a;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 0.95rem;
+}

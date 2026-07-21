@@ -125,9 +125,14 @@ export class PokemonTable implements AfterViewInit {
   }
 
   addToTeam(pokemon: Pokemon): void {
+    const pokemonName = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
+
     if (this.isInTeam(pokemon.id)) {
-      this.snackBar.open(`${pokemon.name} is already in your team.`, 'Close', {
+      this.snackBar.open(`${pokemonName} is already in your team.`, 'Close', {
         duration: 2500,
+        panelClass: ['info-snackbar'],
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
       });
       return;
     }
@@ -135,14 +140,20 @@ export class PokemonTable implements AfterViewInit {
     if (this.isTeamFull()) {
       this.snackBar.open('Your team already has 6 Pokémon.', 'Close', {
         duration: 2500,
+        panelClass: ['warning-snackbar'],
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
       });
       return;
     }
 
     this.store.addToTeam(pokemon);
 
-    this.snackBar.open(`${pokemon.name} added to your team.`, 'Close', {
+    this.snackBar.open(`🎉 ${pokemonName} added to your team!`, 'Close', {
       duration: 2500,
+      panelClass: ['success-snackbar'],
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
     });
   }
 

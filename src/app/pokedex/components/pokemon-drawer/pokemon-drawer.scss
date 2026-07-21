@@ -5,11 +5,28 @@
 }
 
 .drawer {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 28px;
   padding: 30px;
   min-height: 100%;
+}
+
+.close-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 2;
+  background: #f4f4f5;
+  color: #52525b;
+  width: 36px;
+  height: 36px;
+}
+
+.close-btn:hover {
+  background: #e4e4e7;
+  color: #18181b;
 }
 
 /* ================= HERO ================= */

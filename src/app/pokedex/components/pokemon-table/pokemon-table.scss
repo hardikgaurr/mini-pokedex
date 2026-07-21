@@ -17,6 +17,8 @@
   box-shadow: 0 20px 48px rgba(15, 23, 42, .08);
 }
 
+/* ---------------- Toolbar Layout ---------------- */
+
 .table-toolbar {
   display: flex;
   justify-content: space-between;
@@ -39,46 +41,81 @@
   font-size: .95rem;
 }
 
-/* ---------------- Search ---------------- */
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+/* ---------------- Search & Filter Controls ---------------- */
 
 .search-field {
-  width: 400px;
-  max-width: 100%;
+  flex: 1;
+  min-width: 180px;
+  max-width: 280px;
 }
 
-::ng-deep .search-field .mat-mdc-text-field-wrapper {
+.type-filter {
+  min-width: 200px;
+}
+
+/* Common container base */
+::ng-deep .search-field .mat-mdc-text-field-wrapper,
+::ng-deep .type-filter .mat-mdc-text-field-wrapper {
   background: #f8fafc !important;
-  border: 1px solid transparent;
+  border: 1px solid #f1f5f9 !important;
   border-radius: 18px !important;
-  height: 56px;
-  transition: all .25s ease;
-  box-shadow: 0 1px 2px rgba(15,23,42,.04);
+  height: 52px;
+  padding: 0 16px !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.02);
 }
 
-::ng-deep .search-field:hover .mat-mdc-text-field-wrapper {
+/* Hover States */
+::ng-deep .search-field:hover .mat-mdc-text-field-wrapper,
+::ng-deep .type-filter:hover .mat-mdc-text-field-wrapper {
   background: #ffffff !important;
-  border-color: #dbeafe;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
 }
 
-::ng-deep .search-field.mat-focused .mat-mdc-text-field-wrapper {
-  background: white !important;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59,130,246,.12);
+/* Focus States */
+::ng-deep .search-field.mat-focused .mat-mdc-text-field-wrapper,
+::ng-deep .type-filter.mat-focused .mat-mdc-text-field-wrapper {
+  background: #ffffff !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12) !important;
 }
 
-::ng-deep .search-field .mat-mdc-form-field-flex {
-  height: 56px;
+/* Flex alignments */
+::ng-deep .search-field .mat-mdc-form-field-flex,
+::ng-deep .type-filter .mat-mdc-form-field-flex {
+  height: 52px;
   align-items: center;
 }
 
-::ng-deep .search-field .mat-mdc-form-field-infix {
-  min-height: 56px;
-  padding-top: 16px !important;
-  padding-bottom: 16px !important;
+::ng-deep .search-field .mat-mdc-form-field-infix,
+::ng-deep .type-filter .mat-mdc-form-field-infix {
+  min-height: 52px;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  display: flex;
+  align-items: center;
 }
 
+/* Hide default Material field lines/subscripts */
+::ng-deep .search-field .mdc-notched-outline,
+::ng-deep .type-filter .mdc-notched-outline,
+::ng-deep .search-field .mat-mdc-form-field-subscript-wrapper,
+::ng-deep .type-filter .mat-mdc-form-field-subscript-wrapper {
+  display: none !important;
+}
+
+/* Search Field Customization */
 ::ng-deep .search-field input {
-  font-size: .98rem;
+  font-size: .95rem;
   color: #0f172a;
 }
 
@@ -88,38 +125,117 @@
 
 ::ng-deep .search-field mat-icon {
   color: #64748b;
-  margin-right: 12px;
-  font-size: 22px;
-  width: 22px;
-  height: 22px;
+  margin-right: 8px;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
 }
 
-::ng-deep .search-field .mdc-notched-outline {
-  display: none;
+/* Type Filter Field Customization */
+.filter-icon {
+  color: #64748b;
+  margin-right: 8px;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
 }
 
-::ng-deep .search-field .mat-mdc-form-field-subscript-wrapper {
-  display: none;
+::ng-deep .type-filter .mat-mdc-select-value {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #1e293b;
 }
+
+::ng-deep .type-filter .mat-mdc-select-arrow {
+  color: #64748b;
+}
+
+/* Dropdown menu items styling */
+.option-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.type-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.type-dot.all-types { background: #94a3b8; }
+.type-dot.bg-grass { background: #22c55e; }
+.type-dot.bg-fire { background: #ef4444; }
+.type-dot.bg-water { background: #3b82f6; }
+.type-dot.bg-electric { background: #eab308; }
+.type-dot.bg-poison { background: #a855f7; }
+.type-dot.bg-ground { background: #d97706; }
+.type-dot.bg-rock { background: #78716c; }
+.type-dot.bg-flying { background: #6366f1; }
+.type-dot.bg-bug { background: #84cc16; }
+.type-dot.bg-normal { background: #6b7280; }
+.type-dot.bg-psychic { background: #ec4899; }
+.type-dot.bg-ice { background: #06b6d4; }
+.type-dot.bg-dragon { background: #8b5cf6; }
+.type-dot.bg-dark { background: #374151; }
+.type-dot.bg-steel { background: #64748b; }
+.type-dot.bg-fairy { background: #f43f5e; }
+.type-dot.bg-fighting { background: #dc2626; }
+.type-dot.bg-ghost { background: #7c3aed; }
+
+/* ---------------- Material Dropdown Overlay Fix ---------------- */
+
+::ng-deep .cdk-overlay-pane .mat-mdc-select-panel {
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15) !important;
+  border: 1px solid #e2e8f0 !important;
+  padding: 6px 0 !important;
+}
+
+::ng-deep .cdk-overlay-pane .mat-mdc-option {
+  min-height: 44px !important;
+  border-radius: 8px;
+  margin: 2px 6px;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: #f1f5f9 !important;
+  }
+
+  &.mdc-list-item--selected {
+    background-color: #eff6ff !important;
+    .option-content {
+      color: #2563eb !important;
+      font-weight: 600;
+    }
+  }
+}
+
+/* ---------------- Table Styling ---------------- */
 
 .table-wrapper {
   overflow-x: auto;
   border: 1px solid #e2e8f0;
   border-radius: 18px;
+  background: #ffffff;
 }
 
-table {
+table.mat-mdc-table {
   width: 100%;
   background: white;
   border-collapse: separate;
   border-spacing: 0;
 }
 
-.mat-mdc-header-row {
+.table-wrapper .mat-mdc-header-row {
   background: #f8fafc;
 }
 
-.mat-mdc-header-cell {
+.table-wrapper .mat-mdc-header-cell {
   height: 60px;
   font-size: .78rem;
   font-weight: 700;
@@ -127,11 +243,14 @@ table {
   text-transform: uppercase;
   color: #64748b;
   border-bottom: 1px solid #e2e8f0;
+  padding: 0 16px;
 }
 
-.mat-mdc-cell {
+.table-wrapper .mat-mdc-cell {
   padding-top: 18px;
   padding-bottom: 18px;
+  padding-left: 16px;
+  padding-right: 16px;
   border-bottom: 1px solid #f1f5f9;
 }
 
@@ -202,7 +321,7 @@ table {
   transform: translateY(-1px);
 }
 
-/* Pokémon Types */
+/* Pokémon Type Chip Styling */
 
 .type-grass { background:#dcfce7!important;color:#166534!important; }
 .type-fire { background:#fee2e2!important;color:#b91c1c!important; }
@@ -224,13 +343,15 @@ table {
 .type-ghost { background:#ede9fe!important;color:#6d28d9!important; }
 
 .team-button {
-  min-width: 120px;
-  height: 42px;
-  border-radius: 12px !important;
+  min-width: 110px;
+  height: 40px;
+  border-radius: 10px !important;
   font-weight: 600;
+  background: #2563eb !important;
   transition:
-    transform .2s ease,
-    box-shadow .2s ease;
+    transform .15s ease,
+    box-shadow .15s ease,
+    background .15s ease;
 }
 
 .team-button mat-icon {
@@ -238,12 +359,43 @@ table {
 }
 
 .team-button:not(:disabled):hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(37,99,235,.2);
+  background: #1d4ed8 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, .22);
 }
 
 .team-button:disabled {
-  opacity: .7;
+  opacity: 1;
+  background: #f4f4f5 !important;
+  color: #a1a1aa !important;
+}
+
+/* Empty State */
+
+.empty-state {
+  padding: 48px 16px;
+  text-align: center;
+  color: #64748b;
+}
+
+.empty-state mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #94a3b8;
+  margin-bottom: 12px;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 0.9rem;
 }
 
 /* ---------- Paginator ---------- */
@@ -281,8 +433,6 @@ mat-paginator {
   font-weight: 600;
 }
 
-/* Center page-size value */
-
 ::ng-deep .mat-mdc-paginator .mat-mdc-select-trigger {
   display: flex;
   justify-content: center;
@@ -299,29 +449,23 @@ mat-paginator {
   margin-left: 4px;
 }
 
+/* Responsive adjustments */
 @media (max-width:900px) {
 
   .table-toolbar {
     flex-direction: column;
     align-items: stretch;
-    gap: 20px;
-  }
-
-  .toolbar-left {
-    text-align: center;
   }
 
   .toolbar-right {
-    display: flex;
     flex-direction: column;
-    gap: 16px;
     width: 100%;
   }
 
   .search-field,
   .type-filter {
     width: 100%;
-    max-width: 100%;
+    max-width: none;
   }
 
   .sprite-wrapper {
@@ -335,8 +479,7 @@ mat-paginator {
   }
 
   .team-button {
-    width: 100%;
-    min-width: unset;
+    min-width: 100px;
   }
 
   ::ng-deep .mat-mdc-paginator-container {
@@ -344,4 +487,5 @@ mat-paginator {
     gap: 16px;
     flex-wrap: wrap;
   }
+
 }

@@ -56,4 +56,8 @@ export class Home implements OnInit {
   retry(): void {
     this.store.loadPokemons();
   }
+
+  closeDrawer(): void {
+    this.store.selectPokemon(null as any);
+  }
 }

@@ -8,7 +8,8 @@
     [opened]="selectedPokemon() !== null">
 
     <app-pokemon-drawer
-      [pokemon]="selectedPokemon()">
+      [pokemon]="selectedPokemon()"
+      (close)="closeDrawer()">
     </app-pokemon-drawer>
 
   </mat-drawer>
@@ -24,16 +25,11 @@
         <div class="hero-left">
 
           <div class="hero-badge">
-
             <span class="badge-dot"></span>
-
             Kanto Region · Generation I
-
           </div>
 
-          <h1>
-            Mini Pokédex
-          </h1>
+          <h1>Mini Pokédex</h1>
 
           <p>
             Browse the original Kanto Pokémon, inspect detailed stats,
@@ -46,27 +42,18 @@
         <div class="hero-right">
 
           <div class="stat-card">
-
             <h2>{{ pokemons().length }}</h2>
-
             <span>Pokémon</span>
-
           </div>
 
           <div class="stat-card">
-
             <h2>{{ selectedPokemon() ? '1' : '0' }}</h2>
-
             <span>Selected</span>
-
           </div>
 
           <div class="stat-card">
-
             <h2>6</h2>
-
             <span>Team Limit</span>
-
           </div>
 
         </div>
@@ -103,22 +90,6 @@
             Retry
 
           </button>
-
-        </div>
-
-      }
-
-      @else if (pokemons().length === 0) {
-
-        <div class="empty-state">
-
-          <mat-icon>search_off</mat-icon>
-
-          <h2>No Pokémon Found</h2>
-
-          <p>
-            Try changing your search or type filter.
-          </p>
 
         </div>
 

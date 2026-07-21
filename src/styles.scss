@@ -1,29 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 html,
 body {
   height: 100%;
 }
 
 :root {
-  --bg: #f6f8fc;
+  --bg: #fafafa;
   --surface: #ffffff;
-  --text: #0f172a;
-  --muted: #64748b;
-  --border: #e5e7eb;
-  --primary: #2563eb;
-  --shadow: 0 10px 30px rgba(15, 23, 42, .08);
-  --radius: 20px;
+  --text: #18181b;
+  --muted: #71717a;
+  --border: #e4e4e7;
+  --primary: #18181b;
+  --primary-hover: #27272a;
+  --accent: #2563eb;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, .04);
+  --shadow: 0 4px 16px rgba(0, 0, 0, .06);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, .1);
+  --radius: 16px;
 }
 
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family:
-    Inter,
-    Roboto,
-    "Helvetica Neue",
-    sans-serif;
-
+  font-family: 'Inter', Roboto, "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -39,6 +40,10 @@ img {
   user-select: none;
 }
 
+::selection {
+  background: rgba(37, 99, 235, .15);
+}
+
 .mat-mdc-card {
   border-radius: var(--radius) !important;
   border: 1px solid var(--border);
@@ -46,12 +51,20 @@ img {
 }
 
 .mat-mdc-raised-button,
-.mat-mdc-unelevated-button {
-  border-radius: 12px !important;
+.mat-mdc-unelevated-button,
+.mat-mdc-stroked-button {
+  border-radius: 10px !important;
+  letter-spacing: .01em;
+  font-weight: 600 !important;
+  box-shadow: none !important;
 }
 
-.mat-mdc-stroked-button {
-  border-radius: 12px !important;
+.mat-mdc-unelevated-button.mat-primary {
+  background: var(--primary) !important;
+}
+
+.mat-mdc-unelevated-button.mat-primary:hover {
+  background: var(--primary-hover) !important;
 }
 
 .mat-mdc-form-field {
@@ -63,9 +76,53 @@ img {
 }
 
 .mat-mdc-row {
-  transition: background .18s ease;
+  transition: background .15s ease;
 }
 
 .mat-mdc-row:hover {
-  background: rgba(37,99,235,.04);
+  background: #fafafa;
+}
+
+/* ---------- Snackbars ---------- */
+
+.success-snackbar,
+.warning-snackbar,
+.info-snackbar {
+  --mdc-snackbar-supporting-text-color: #ffffff !important;
+  --mat-snack-bar-button-color: #d4d4d8 !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+.success-snackbar {
+  --mdc-snackbar-container-color: rgba(22, 101, 52, 0.98) !important;
+}
+
+.warning-snackbar {
+  --mdc-snackbar-container-color: rgba(154, 52, 18, 0.98) !important;
+}
+
+.info-snackbar {
+  --mdc-snackbar-container-color: rgba(24, 24, 27, 0.98) !important;
+}
+
+.success-snackbar .mat-mdc-snack-bar-container,
+.warning-snackbar .mat-mdc-snack-bar-container,
+.info-snackbar .mat-mdc-snack-bar-container {
+  border-radius: 12px !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2) !important;
+}
+
+.success-snackbar .mat-mdc-button,
+.warning-snackbar .mat-mdc-button,
+.info-snackbar .mat-mdc-button {
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.success-snackbar .mat-mdc-snack-bar-label,
+.warning-snackbar .mat-mdc-snack-bar-label,
+.info-snackbar .mat-mdc-snack-bar-label {
+  font-weight: 500;
+  letter-spacing: .2px;
 }
