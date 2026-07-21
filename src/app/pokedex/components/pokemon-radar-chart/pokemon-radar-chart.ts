@@ -1,19 +1,18 @@
-import { Component, OnChanges, SimpleChanges, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnChanges, SimpleChanges, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {
   Chart,
   ChartData,
   ChartOptions,
+  Filler,
+  Legend,
+  LineElement,
+  PointElement,
   RadarController,
   RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
   Tooltip,
-  Legend,
 } from 'chart.js';
-
 import { BaseChartDirective } from 'ng2-charts';
 
 import { Pokemon } from '../../../shared/models/pokemon.model';
@@ -34,27 +33,17 @@ Chart.register(
   imports: [CommonModule, BaseChartDirective],
   templateUrl: './pokemon-radar-chart.html',
   styleUrl: './pokemon-radar-chart.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PokemonRadarChart implements OnChanges {
   readonly pokemon = input<Pokemon | null>(null);
 
   radarChartData: ChartData<'radar'> = {
     labels: [],
-    datasets: [
-      {
-        label: 'Base Stats',
-        data: [],
-        borderColor: '#2563eb',
-        backgroundColor: 'rgba(37,99,235,.20)',
-        borderWidth: 2,
-        pointRadius: 4,
-        pointHoverRadius: 6,
-        pointBackgroundColor: '#2563eb',
-      },
-    ],
+    datasets: [],
   };
 
-  radarChartOptions: ChartOptions<'radar'> = {
+  readonly radarChartOptions: ChartOptions<'radar'> = {
     responsive: true,
     maintainAspectRatio: false,
 
@@ -62,10 +51,13 @@ export class PokemonRadarChart implements OnChanges {
       legend: {
         display: false,
       },
+      tooltip: {
+        enabled: true,
+      },
     },
 
     animation: {
-      duration: 900,
+      duration: 800,
       easing: 'easeOutQuart',
     },
 
@@ -105,17 +97,21 @@ export class PokemonRadarChart implements OnChanges {
     const pokemon = this.pokemon();
 
     if (!pokemon) {
+      this.radarChartData = {
+        labels: [],
+        datasets: [],
+      };
       return;
     }
 
     this.radarChartData = {
-      labels: pokemon.stats.map((stat) => stat.name),
+      labels: pokemon.stats.map((stat) => stat.name.toUpperCase()),
       datasets: [
         {
-          label: pokemon.name,
+          label: `${pokemon.name} Base Stats`,
           data: pokemon.stats.map((stat) => stat.value),
           borderColor: '#2563eb',
-          backgroundColor: 'rgba(37,99,235,.20)',
+          backgroundColor: 'rgba(37,99,235,0.20)',
           borderWidth: 2,
           pointRadius: 4,
           pointHoverRadius: 6,
