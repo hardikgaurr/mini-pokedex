@@ -1,40 +1,93 @@
 @if (pokemon()) {
 
-<div class="drawer">
+  <div class="drawer">
 
-  <section class="hero">
+    <section class="hero">
 
-    <div class="hero-image">
+      <div class="hero-image">
 
-      <img
-        [src]="pokemon()!.sprite"
-        [alt]="pokemon()!.name">
+        <img
+          [src]="pokemon()!.sprite"
+          [alt]="pokemon()!.name"
+          loading="lazy" />
 
-    </div>
+      </div>
 
-    <div class="hero-content">
+      <div class="hero-content">
 
-      <span class="pokemon-number">
+        <span class="pokemon-number">
+          #{{ pokemon()!.id }}
+        </span>
 
-        #{{ pokemon()!.id }}
+        <h2>
+          {{ pokemon()!.name | titlecase }}
+        </h2>
 
-      </span>
+        <div class="type-list">
 
-      <h2>
+          @for (type of pokemon()!.types; track type) {
 
-        {{ pokemon()!.name | titlecase }}
+            <mat-chip
+              class="type-chip"
+              [class]="'type-' + type">
 
-      </h2>
+              {{ type | titlecase }}
 
-      <div class="type-list">
+            </mat-chip>
 
-        @for (type of pokemon()!.types; track type) {
+          }
 
-          <mat-chip
-            class="type-chip"
-            [class]="'type-' + type">
+        </div>
 
-            {{ type | titlecase }}
+      </div>
+
+    </section>
+
+    <section class="info-grid">
+
+      <div class="info-card">
+
+        <span class="label">
+          Height
+        </span>
+
+        <span class="value">
+          {{ pokemon()!.height }}
+        </span>
+
+      </div>
+
+      <div class="info-card">
+
+        <span class="label">
+          Weight
+        </span>
+
+        <span class="value">
+          {{ pokemon()!.weight }}
+        </span>
+
+      </div>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-title">
+
+        <mat-icon>auto_awesome</mat-icon>
+
+        <h3>Abilities</h3>
+
+      </div>
+
+      <div class="ability-list">
+
+        @for (ability of pokemon()!.abilities; track ability) {
+
+          <mat-chip class="ability-chip">
+
+            {{ ability | titlecase }}
 
           </mat-chip>
 
@@ -42,134 +95,45 @@
 
       </div>
 
-    </div>
+    </section>
 
-  </section>
+    <section class="section">
 
-  <section class="info-grid">
+      <div class="section-title">
 
-    <div class="info-card">
+        <mat-icon>query_stats</mat-icon>
 
-      <span class="label">
+        <h3>Base Stats</h3>
 
-        Height
+      </div>
 
-      </span>
+      <app-pokemon-radar-chart
+        [pokemon]="pokemon()">
+      </app-pokemon-radar-chart>
 
-      <span class="value">
+    </section>
 
-        {{ pokemon()!.height }}
-
-      </span>
-
-    </div>
-
-    <div class="info-card">
-
-      <span class="label">
-
-        Weight
-
-      </span>
-
-      <span class="value">
-
-        {{ pokemon()!.weight }}
-
-      </span>
-
-    </div>
-
-  </section>
-
-  <section class="section">
-
-    <div class="section-title">
-
-      <mat-icon>
-
-        auto_awesome
-
-      </mat-icon>
-
-      <h3>
-
-        Abilities
-
-      </h3>
-
-    </div>
-
-    <div class="ability-list">
-
-      @for (ability of pokemon()!.abilities; track ability) {
-
-        <mat-chip class="ability-chip">
-
-          {{ ability | titlecase }}
-
-        </mat-chip>
-
-      }
-
-    </div>
-
-  </section>
-
-  <section class="section">
-
-    <div class="section-title">
-
-      <mat-icon>
-
-        query_stats
-
-      </mat-icon>
-
-      <h3>
-
-        Base Stats
-
-      </h3>
-
-    </div>
-
-    <app-pokemon-radar-chart
-      [pokemon]="pokemon()">
-    </app-pokemon-radar-chart>
-
-  </section>
-
-</div>
+  </div>
 
 }
 
 @else {
 
-<div class="drawer-empty">
+  <div class="drawer-empty">
 
-  <div class="empty-icon">
+    <div class="empty-icon">
 
-    <mat-icon>
+      <mat-icon>catching_pokemon</mat-icon>
 
-      catching_pokemon
+    </div>
 
-    </mat-icon>
+    <h2>No Pokémon Selected</h2>
+
+    <p>
+      Select a Pokémon from the table to explore its abilities,
+      physical attributes and battle statistics.
+    </p>
 
   </div>
-
-  <h2>
-
-    No Pokémon Selected
-
-  </h2>
-
-  <p>
-
-    Select any Pokémon from the table to explore its abilities, physical attributes and battle statistics.
-
-  </p>
-
-</div>
 
 }

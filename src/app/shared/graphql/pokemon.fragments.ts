@@ -2,6 +2,8 @@ import { gql } from 'apollo-angular';
 
 /**
  * Fields required for rendering the Pokédex table.
+ * We intentionally include abilities because the drawer receives the
+ * selected Pokémon directly from the table/store.
  */
 export const POKEMON_LIST_INFO = gql`
   fragment PokemonListInfo on pokemon_v2_pokemon {
@@ -16,6 +18,12 @@ export const POKEMON_LIST_INFO = gql`
 
     pokemon_v2_pokemontypes {
       pokemon_v2_type {
+        name
+      }
+    }
+
+    pokemon_v2_pokemonabilities {
+      pokemon_v2_ability {
         name
       }
     }

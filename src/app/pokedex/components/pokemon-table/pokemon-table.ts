@@ -20,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -46,6 +47,7 @@ import { PokemonStore } from '../../state/pokemon.store';
     MatIconModule,
     MatTooltipModule,
     MatChipsModule,
+    MatSnackBarModule,
   ],
   templateUrl: './pokemon-table.html',
   styleUrl: './pokemon-table.scss',
@@ -83,6 +85,7 @@ export class PokemonTable implements AfterViewInit {
 
   private readonly store = inject(PokemonStore);
   private readonly selectors = inject(PokemonSelectors);
+  private readonly snackBar = inject(MatSnackBar);
 
   readonly team = toSignal(this.selectors.team$, {
     initialValue: [] as Pokemon[],
@@ -122,11 +125,25 @@ export class PokemonTable implements AfterViewInit {
   }
 
   addToTeam(pokemon: Pokemon): void {
-    if (this.isInTeam(pokemon.id) || this.isTeamFull()) {
+    if (this.isInTeam(pokemon.id)) {
+      this.snackBar.open(`${pokemon.name} is already in your team.`, 'Close', {
+        duration: 2500,
+      });
+      return;
+    }
+
+    if (this.isTeamFull()) {
+      this.snackBar.open('Your team already has 6 Pokémon.', 'Close', {
+        duration: 2500,
+      });
       return;
     }
 
     this.store.addToTeam(pokemon);
+
+    this.snackBar.open(`${pokemon.name} added to your team.`, 'Close', {
+      duration: 2500,
+    });
   }
 
   isInTeam(id: number): boolean {

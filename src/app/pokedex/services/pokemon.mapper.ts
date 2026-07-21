@@ -41,25 +41,25 @@ export function mapPokemonList(response: any): Pokemon[] {
 
     return {
       id: pokemon.id,
-
       name: pokemon.name,
-
       height: pokemon.height,
-
       weight: pokemon.weight,
 
       sprite: sprites.front_default ?? '',
 
-      types: pokemon.pokemon_v2_pokemontypes.map((type: any) => type.pokemon_v2_type.name),
+      types: pokemon.pokemon_v2_pokemontypes?.map((type: any) => type.pokemon_v2_type.name) ?? [],
 
-      abilities: pokemon.pokemon_v2_pokemonabilities.map(
-        (ability: any) => ability.pokemon_v2_ability.name,
-      ),
+      // List query doesn't include abilities.
+      abilities:
+        pokemon.pokemon_v2_pokemonabilities?.map(
+          (ability: any) => ability.pokemon_v2_ability.name,
+        ) ?? [],
 
-      stats: pokemon.pokemon_v2_pokemonstats.map((stat: any) => ({
-        name: stat.pokemon_v2_stat.name as PokemonStatName,
-        value: stat.base_stat,
-      })),
+      stats:
+        pokemon.pokemon_v2_pokemonstats?.map((stat: any) => ({
+          name: stat.pokemon_v2_stat.name as PokemonStatName,
+          value: stat.base_stat,
+        })) ?? [],
     };
   });
 }
