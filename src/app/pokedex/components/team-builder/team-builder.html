@@ -4,21 +4,13 @@
 
     <div>
 
-      <h2>
+      <h2>Your Team</h2>
 
-        Your Team
-
-      </h2>
-
-      <p>
-
-        {{ team().length }} / 6 Pokémon selected
-
-      </p>
+      <p>{{ teamSize() }} / 6 Pokémon selected</p>
 
     </div>
 
-    @if (team().length > 0) {
+    @if (!isEmpty()) {
 
       <button
         mat-stroked-button
@@ -26,11 +18,7 @@
         class="clear-btn"
         (click)="clear()">
 
-        <mat-icon>
-
-          delete_sweep
-
-        </mat-icon>
+        <mat-icon>delete_sweep</mat-icon>
 
         Clear Team
 
@@ -40,30 +28,21 @@
 
   </div>
 
-  @if (team().length === 0) {
+  @if (isEmpty()) {
 
     <div class="empty-team">
 
       <div class="empty-icon">
 
-        <mat-icon>
-
-          catching_pokemon
-
-        </mat-icon>
+        <mat-icon>catching_pokemon</mat-icon>
 
       </div>
 
-      <h3>
-
-        Build Your Dream Team
-
-      </h3>
+      <h3>Build Your Dream Team</h3>
 
       <p>
-
-        Choose up to six Pokémon from the Pokédex. Your selected team will appear here.
-
+        Choose up to six Pokémon from the Pokédex. Your selected team will
+        appear here.
       </p>
 
     </div>
@@ -82,13 +61,10 @@
             mat-icon-button
             color="warn"
             class="remove-btn"
-            (click)="remove(pokemon.id)">
+            (click)="remove(pokemon.id)"
+            aria-label="Remove {{ pokemon.name }} from team">
 
-            <mat-icon>
-
-              close
-
-            </mat-icon>
+            <mat-icon>close</mat-icon>
 
           </button>
 
@@ -96,20 +72,17 @@
 
             <img
               [src]="pokemon.sprite"
-              [alt]="pokemon.name">
+              [alt]="pokemon.name"
+              loading="lazy">
 
           </div>
 
           <div class="pokemon-number">
-
             #{{ pokemon.id }}
-
           </div>
 
           <h3>
-
             {{ pokemon.name | titlecase }}
-
           </h3>
 
           <div class="type-container">
@@ -132,21 +105,13 @@
 
       }
 
-      @for (slot of [1,2,3,4,5,6].slice(team().length); track $index) {
+      @for (slot of [1,2,3,4,5,6].slice(teamSize()); track $index) {
 
         <div class="team-slot">
 
-          <mat-icon>
+          <mat-icon>catching_pokemon</mat-icon>
 
-            catching_pokemon
-
-          </mat-icon>
-
-          <span>
-
-            Empty Slot
-
-          </span>
+          <span>Empty Slot</span>
 
         </div>
 
