@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatCardModule } from '@angular/material/card';
@@ -18,4 +18,6 @@ import { PokemonRadarChart } from '../pokemon-radar-chart/pokemon-radar-chart';
 })
 export class PokemonDrawer {
   readonly pokemon = input<Pokemon | null>(null);
+
+  readonly close = output<void>();
 }
