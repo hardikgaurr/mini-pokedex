@@ -1,4 +1,13 @@
-import { AfterViewInit, Component, ViewChild, inject, input, output, effect } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ViewChild,
+  effect,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -40,6 +49,7 @@ import { PokemonStore } from '../../state/pokemon.store';
   ],
   templateUrl: './pokemon-table.html',
   styleUrl: './pokemon-table.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PokemonTable implements AfterViewInit {
   readonly pokemons = input.required<Pokemon[]>();
@@ -87,10 +97,7 @@ export class PokemonTable implements AfterViewInit {
   constructor() {
     effect(() => {
       this.dataSource.data = this.pokemons();
-
-      if (this.paginator) {
-        this.paginator.firstPage();
-      }
+      this.paginator?.firstPage();
     });
   }
 
@@ -101,19 +108,12 @@ export class PokemonTable implements AfterViewInit {
 
   onSearch(value: string): void {
     this.store.setSearchTerm(value);
-
-    if (this.paginator) {
-      this.paginator.firstPage();
-    }
+    this.paginator?.firstPage();
   }
 
   onTypeFilter(type: string): void {
-    // We'll implement this in the store next.
     this.store.setTypeFilter(type);
-
-    if (this.paginator) {
-      this.paginator.firstPage();
-    }
+    this.paginator?.firstPage();
   }
 
   onRowClick(pokemon: Pokemon): void {
@@ -122,6 +122,10 @@ export class PokemonTable implements AfterViewInit {
   }
 
   addToTeam(pokemon: Pokemon): void {
+    if (this.isInTeam(pokemon.id) || this.isTeamFull()) {
+      return;
+    }
+
     this.store.addToTeam(pokemon);
   }
 
@@ -129,7 +133,7 @@ export class PokemonTable implements AfterViewInit {
     return this.team().some((pokemon) => pokemon.id === id);
   }
 
-  get isTeamFull(): boolean {
+  isTeamFull(): boolean {
     return this.team().length >= 6;
   }
 
@@ -146,7 +150,7 @@ export class PokemonTable implements AfterViewInit {
       return 'Added';
     }
 
-    if (this.isTeamFull) {
+    if (this.isTeamFull()) {
       return 'Team Full';
     }
 
@@ -158,7 +162,7 @@ export class PokemonTable implements AfterViewInit {
       return 'check';
     }
 
-    if (this.isTeamFull) {
+    if (this.isTeamFull()) {
       return 'block';
     }
 
@@ -170,7 +174,7 @@ export class PokemonTable implements AfterViewInit {
       return 'Already in your team';
     }
 
-    if (this.isTeamFull) {
+    if (this.isTeamFull()) {
       return 'Maximum of 6 Pokémon allowed';
     }
 

@@ -7,21 +7,50 @@
       <span>{{ dataSource.data.length }} Pokémon</span>
     </div>
 
-    <mat-form-field
-      appearance="outline"
-      class="search-field">
+    <div class="toolbar-right">
 
-      <mat-icon matPrefix>
-        search
-      </mat-icon>
+      <mat-form-field
+        appearance="outline"
+        class="search-field">
 
-      <input
-        matInput
-        #search
-        placeholder="Search by name..."
-        (input)="onSearch(search.value)" />
+        <mat-icon matPrefix>search</mat-icon>
 
-    </mat-form-field>
+        <input
+          matInput
+          #search
+          placeholder="Search by name..."
+          autocomplete="off"
+          (input)="onSearch(search.value)" />
+
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        class="type-filter">
+
+        <mat-label>Type</mat-label>
+
+        <mat-select
+          #type
+          (selectionChange)="onTypeFilter(type.value ?? '')">
+
+          <mat-option value="">
+            All Types
+          </mat-option>
+
+          @for (pokemonType of pokemonTypes; track pokemonType) {
+
+            <mat-option [value]="pokemonType">
+              {{ pokemonType | titlecase }}
+            </mat-option>
+
+          }
+
+        </mat-select>
+
+      </mat-form-field>
+
+    </div>
 
   </div>
 
@@ -43,9 +72,12 @@
         <td mat-cell *matCellDef="let pokemon">
 
           <div class="sprite-wrapper">
+
             <img
               [src]="pokemon.sprite"
-              [alt]="pokemon.name" />
+              [alt]="pokemon.name"
+              loading="lazy" />
+
           </div>
 
         </td>
@@ -95,10 +127,7 @@
 
           <div class="type-list">
 
-            @for (
-              type of pokemon.types;
-              track trackType($index, type)
-            ) {
+            @for (type of pokemon.types; track trackType($index, type)) {
 
               <mat-chip
                 class="type-chip"
@@ -130,7 +159,7 @@
             mat-flat-button
             color="primary"
             class="team-button"
-            [disabled]="isInTeam(pokemon.id) || isTeamFull"
+            [disabled]="isInTeam(pokemon.id) || isTeamFull()"
             [matTooltip]="buttonTooltip(pokemon)"
             (click)="addToTeam(pokemon); $event.stopPropagation()">
 
@@ -167,8 +196,8 @@
     <mat-paginator
       #paginator
       [length]="dataSource.data.length"
-      [pageSize]="5"
-      [pageSizeOptions]="[5, 10, 20]"
+      [pageSize]="10"
+      [pageSizeOptions]="[10, 25, 50]"
       showFirstLastButtons>
 
     </mat-paginator>
