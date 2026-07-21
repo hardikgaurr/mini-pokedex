@@ -1,9 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, catchError, EMPTY, tap } from 'rxjs';
+import { BehaviorSubject, EMPTY, catchError, tap } from 'rxjs';
 
 import { PokemonApi } from '../services/pokemon';
 import { Pokemon } from '../../shared/models/pokemon.model';
 import { PokemonState, initialPokemonState } from './pokemon.state';
+
+const MAX_TEAM_SIZE = 6;
 
 @Injectable({
   providedIn: 'root',
@@ -27,8 +29,10 @@ export class PokemonStore {
   }
 
   loadPokemons(): void {
-    this.setLoading(true);
-    this.setError(null);
+    this.setState({
+      loading: true,
+      error: null,
+    });
 
     this.pokemonApi
       .getPokemons()
@@ -39,9 +43,14 @@ export class PokemonStore {
             loading: false,
           });
         }),
-        catchError(() => {
-          this.setError('Failed to load Pokémon.');
-          this.setLoading(false);
+        catchError((error) => {
+          console.error('Failed to load Pokémon:', error);
+
+          this.setState({
+            loading: false,
+            error: 'Failed to load Pokémon.',
+          });
+
           return EMPTY;
         }),
       )
@@ -72,16 +81,12 @@ export class PokemonStore {
     });
   }
 
-  // ===========================
-  // Team Builder
-  // ===========================
-
   addToTeam(pokemon: Pokemon): void {
-    if (this.state.team.some((p) => p.id === pokemon.id)) {
+    if (this.isInTeam(pokemon.id)) {
       return;
     }
 
-    if (this.state.team.length >= 6) {
+    if (this.state.team.length >= MAX_TEAM_SIZE) {
       return;
     }
 
@@ -97,6 +102,10 @@ export class PokemonStore {
   }
 
   clearTeam(): void {
+    if (this.state.team.length === 0) {
+      return;
+    }
+
     this.setState({
       team: [],
     });
@@ -104,20 +113,6 @@ export class PokemonStore {
 
   isInTeam(id: number): boolean {
     return this.state.team.some((pokemon) => pokemon.id === id);
-  }
-
-  // ===========================
-
-  private setLoading(loading: boolean): void {
-    this.setState({
-      loading,
-    });
-  }
-
-  private setError(error: string | null): void {
-    this.setState({
-      error,
-    });
   }
 
   reset(): void {
